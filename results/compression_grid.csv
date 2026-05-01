@@ -1,0 +1,1 @@
+config_name,param_count_m,global_f1,per_field_f1_company,per_field_f1_date,per_field_f1_address,per_field_f1_total,peak_vram_gb,mean_latency_ms,p95_latency_ms,usd_per_run,co2eq_g

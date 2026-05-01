@@ -62,10 +62,10 @@ DONUT_F1: float = 0.827
 
 PIPELINE_PARAMS_M: float = 66.93
 PIPELINE_F1: float = 0.858
-# Paired-bootstrap 95% CI on ΔF1 (DONUT − pipeline); converted to absolute
-# pipeline whisker: ±half-width of CI projected onto pipeline F1.
-PIPELINE_CI_LOW: float = 0.858 + 0.0087   # upper bound (less negative delta)
-PIPELINE_CI_HIGH: float = 0.858 + 0.0529  # would be above DONUT if positive
+# Paired-bootstrap 95% CI on ΔF1 = DONUT_F1 − PIPELINE_F1; both bounds are negative
+# (pipeline is better), so rearranging gives pipeline F1 bounds as DONUT_F1 − CI_bound.
+DELTA_F1_CI_LOW: float = -0.0529   # lower bound of CI on ΔF1 (most negative)
+DELTA_F1_CI_HIGH: float = -0.0087  # upper bound of CI on ΔF1 (least negative)
 
 
 def _pareto_frontier(
@@ -197,14 +197,18 @@ def plot(
     )
 
     # --- (c) Pipeline with 95% CI whisker ---
-    # The CI is on ΔF1 = DONUT_F1 − pipeline_F1, so pipeline whisker is
-    # the CI bounds reflected: pipeline + (−CI_bound on delta).
-    ci_low_pipeline = PIPELINE_F1 - 0.0529   # lower bound on pipeline F1
-    ci_high_pipeline = PIPELINE_F1 + 0.0087  # upper bound on pipeline F1
+    # ΔF1 = DONUT_F1 − pipeline_F1 ∈ [DELTA_F1_CI_LOW, DELTA_F1_CI_HIGH].
+    # Rearranging: pipeline_F1 = DONUT_F1 − ΔF1, so:
+    #   ci_f1_low  = DONUT_F1 − DELTA_F1_CI_HIGH  (least negative → smallest pipeline F1)
+    #   ci_f1_high = DONUT_F1 − DELTA_F1_CI_LOW   (most negative → largest pipeline F1)
+    ci_f1_low = DONUT_F1 - DELTA_F1_CI_HIGH    # 0.827 + 0.0087 ≈ 0.836
+    ci_f1_high = DONUT_F1 - DELTA_F1_CI_LOW    # 0.827 + 0.0529 ≈ 0.880
+    yerr_low = PIPELINE_F1 - ci_f1_low
+    yerr_high = ci_f1_high - PIPELINE_F1
     ax.errorbar(
         PIPELINE_PARAMS_M,
         PIPELINE_F1,
-        yerr=[[PIPELINE_F1 - ci_low_pipeline], [ci_high_pipeline - PIPELINE_F1]],
+        yerr=[[yerr_low], [yerr_high]],
         fmt="s",
         color=WONG["bluish_green"],
         zorder=6,

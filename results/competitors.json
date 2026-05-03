@@ -1,0 +1,30 @@
+[
+  {
+    "name": "LayoutLMv3",
+    "param_count_m": 125.0,
+    "global_f1": null,
+    "citation": "Huang et al. 2022, arXiv:2204.08387",
+    "note": "TODO: verify exact token-F1 on SROIE Task-3 347-image test set from source paper"
+  },
+  {
+    "name": "BROS",
+    "param_count_m": 110.0,
+    "global_f1": null,
+    "citation": "Hong et al. 2022, AAAI",
+    "note": "TODO: verify exact token-F1 on SROIE Task-3 347-image test set from source paper"
+  },
+  {
+    "name": "TILT",
+    "param_count_m": 230.0,
+    "global_f1": null,
+    "citation": "Powalski et al. 2021, arXiv:2102.09550",
+    "note": "TODO: verify exact token-F1 on SROIE Task-3 347-image test set from source paper"
+  },
+  {
+    "name": "PICK",
+    "param_count_m": 26.0,
+    "global_f1": null,
+    "citation": "Yu et al. 2021, ICPR",
+    "note": "TODO: verify exact token-F1 on SROIE Task-3 347-image test set from source paper"
+  }
+]
